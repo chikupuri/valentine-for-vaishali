@@ -31,4 +31,146 @@
       margin-bottom: 20px;
     }
 
-    .image
+    .image {
+      width: 320px;
+      border-radius: 16px;
+      border: 4px solid #ff4d94;
+      margin-bottom: 25px;
+    }
+
+    .buttons {
+      position: relative;
+      height: 140px;
+      width: 420px;
+      margin: auto;
+    }
+
+    button {
+      font-size: 1.2rem;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      position: absolute;
+      transition: transform 0.15s ease;
+    }
+
+    #yesBtn {
+      background-color: #ff4d94;
+      color: white;
+      left: 60px;
+      top: 50px;
+      z-index: 2;
+    }
+
+    #noBtn {
+      background-color: white;
+      color: #ff4d94;
+      left: 240px;
+      top: 50px;
+      z-index: 1;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .love-screen h1 {
+      font-size: 3rem;
+      margin: 15px 0;
+    }
+
+    /* ❤️ Heart rain */
+    .heart {
+      position: fixed;
+      top: -20px;
+      font-size: 20px;
+      animation: fall linear forwards;
+      color: #ff4d94;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- QUESTION SCREEN -->
+  <div class="container" id="questionScreen">
+    <h1>Will you be my Valentine, forever, Vaishali? 💖</h1>
+
+    <img src="4201444947_3f9b947c61.jpg" class="image" alt="Cute cat kiss">
+
+    <div class="buttons" id="buttonArea">
+      <button id="yesBtn">Yes 💘</button>
+      <button id="noBtn">No 😒</button>
+    </div>
+  </div>
+
+  <!-- LOVE SCREEN -->
+  <div class="container hidden love-screen" id="loveScreen">
+    <h1>Congratulations 💐</h1>
+    <h1>Chirag loves you forever ❤️</h1>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const buttonArea = document.getElementById("buttonArea");
+    const questionScreen = document.getElementById("questionScreen");
+    const loveScreen = document.getElementById("loveScreen");
+
+    /* ❤️ HEART RAIN */
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(createHeart, 300);
+
+    /* 😈 FLOATING NO BUTTON (ALWAYS VISIBLE, NEVER CLICKABLE) */
+    noBtn.addEventListener("mouseenter", () => {
+      const areaRect = buttonArea.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const maxX = areaRect.width - btnRect.width;
+      const maxY = areaRect.height - btnRect.height;
+
+      const newX = Math.random() * maxX;
+      const newY = Math.random() * maxY;
+
+      noBtn.style.left = newX + "px";
+      noBtn.style.top = newY + "px";
+    });
+
+    // Block clicks permanently
+    noBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+
+    /* 💘 YES CLICK */
+    yesBtn.addEventListener("click", () => {
+      questionScreen.classList.add("hidden");
+      loveScreen.classList.remove("hidden");
+
+      confetti({
+        particleCount: 350,
+        spread: 140,
+        origin: { y: 0.6 }
+      });
+    });
+  </script>
+
+</body>
+</html>
